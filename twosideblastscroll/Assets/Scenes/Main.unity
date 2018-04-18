@@ -223,6 +223,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37675120474e48a3875670b1e219bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 30
+  tilt: 0
+  boundary:
+    xMin: -27
+    xMax: 2
+    zMin: -9
+    zMax: 9
 --- !u!54 &609063395
 Rigidbody:
   m_ObjectHideFlags: 0
