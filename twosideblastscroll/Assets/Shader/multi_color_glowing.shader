@@ -7,7 +7,6 @@
 		_PointOnePosition("Position of point one", Vector) = (0,0,0,0)
 		_PointTwoPosition("Position of point two", Vector) = (0,0,0,0)
 		_PointThreePosition("Position of point three", Vector) = (0,0,0,0)
-		_PointFourPosition("Position of point four", Vector) = (0,0,0,0)
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -31,7 +30,6 @@
 		fixed4 _PointOnePosition;
 		fixed4 _PointTwoPosition;
 		fixed4 _PointThreePosition;
-		fixed4 _PointFourPosition;
 		fixed4 _Color;
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
@@ -50,11 +48,10 @@
 
 			//here calculate what would be the distance when you
 			//go over the border of the uv_tex
-			if(IN.uv_MainTex.x > goal_point.x){
-				goal_point = goal_point + (-1,0);
-				distance_two = distance(IN.uv_MainTex, goal_point.xy);
+			if(IN.uv_MainTex.x < goal_point.x){
+				distance_two = distance(IN.uv_MainTex, float2(goal_point.x - 1, goal_point.y));
 			}else{
-				distance_two = distance(IN.uv_MainTex, goal_point.xy);
+				distance_two = distance(IN.uv_MainTex, float2(goal_point.x + 1, goal_point.y));
 			}
 
 			//return the distance that is smaller
@@ -66,18 +63,18 @@
 		}
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
-			float p1_distance = distance(IN.uv_MainTex, _PointOnePosition.xy);
-			float p2_distance = distance(IN.uv_MainTex, _PointTwoPosition.xy);
-			float p3_distance = distance(IN.uv_MainTex, _PointThreePosition.xy);
-			float p4_distance = distance(IN.uv_MainTex, _PointFourPosition.xy);
+			float p1_distance = get_distance(IN, _PointOnePosition);
+			float p2_distance = get_distance(IN, _PointTwoPosition);
+			float p3_distance = get_distance(IN, _PointThreePosition);
 
+			float tidiness = 3;
 			// Albedo comes from a texture tinted by color
 			fixed4 c = (tex2D (_MainTex, IN.uv_MainTex) 
 				* _Color 
-				+ float4(sqrt(p1_distance), 0, sqrt(p1_distance), 0)
-				+ float4(0, sqrt(p2_distance), 0, 0)
-				+ float4(sqrt(p3_distance), sqrt(p3_distance), 0, 0)
-				+ float4(0, 0, sqrt(p4_distance), 0)) / 3;
+				+ float4(tidiness * sqrt(p1_distance), 0, 0, 0)
+				+ float4(0, tidiness * sqrt(p2_distance), 0, 0)
+				+ float4(0, 0, tidiness * sqrt(p3_distance), 0)
+				 ) / 5;
 
 			o.Albedo = c.rgb;
 			// Metallic and smoothness come from slider variables
