@@ -7,6 +7,10 @@
 		_PointOnePosition("Position of point one", Vector) = (0,0,0,0)
 		_PointTwoPosition("Position of point two", Vector) = (0,0,0,0)
 		_PointThreePosition("Position of point three", Vector) = (0,0,0,0)
+		_PointOneMask("Mask for point one", Vector) = (0,0,0,0)
+		_PointTwoMask("Mask for point two", Vector) = (0,0,0,0)
+		_PointThreeMask("Mask for point three", Vector) = (0,0,0,0)
+		_Brigthness("Brigthness", Range(0.1, 2)) = 0.7
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -27,10 +31,14 @@
 
 		half _Glossiness;
 		half _Metallic;
-		fixed4 _PointOnePosition;
-		fixed4 _PointTwoPosition;
-		fixed4 _PointThreePosition;
-		fixed4 _Color;
+		float4 _PointOnePosition;
+		float4 _PointTwoPosition;
+		float4 _PointThreePosition;
+		float4 _PointOneMask;
+		float4 _PointTwoMask;
+		float4 _PointThreeMask;
+		float _Brigthness;
+		float4 _Color;
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
 		// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -39,7 +47,7 @@
 			// put more per-instance properties here
 		UNITY_INSTANCING_CBUFFER_END
 
-		float get_distance(Input IN, float2 goal_point){
+		float get_distance(Input IN, float4 goal_point){
 			float distance_one;
 			float distance_two;
 
@@ -48,34 +56,42 @@
 
 			//here calculate what would be the distance when you
 			//go over the border of the uv_tex
-			if(IN.uv_MainTex.x < goal_point.x){
-				distance_two = distance(IN.uv_MainTex, float2(goal_point.x - 1, goal_point.y));
-			}else{
-				distance_two = distance(IN.uv_MainTex, float2(goal_point.x + 1, goal_point.y));
-			}
+			float isSmaller = step(IN.uv_MainTex.x, goal_point.x);
+			float plus_direction = distance(IN.uv_MainTex, float2(goal_point.x + 1, goal_point.y)) * (1 - isSmaller);
+			float minus_direction = distance(IN.uv_MainTex, float2(goal_point.x - 1, goal_point.y)) * isSmaller;
+			distance_two = max(plus_direction, minus_direction);
+			// the above code is the same as this:
+			// if(IN.uv_MainTex.x < goal_point.x){
+			// 	distance_two = distance(IN.uv_MainTex, float2(goal_point.x - 1, goal_point.y));
+			// }else{
+			// 	distance_two = distance(IN.uv_MainTex, float2(goal_point.x + 1, goal_point.y));
+			// }
 
-			//return the distance that is smaller
-			if(distance_one > distance_two){
-				return distance_two;
-			}else{
-				return distance_one;
-			}
+			return min(distance_one, distance_two);
+		}
+
+		float4 applyPoint(Input IN, float4 position, float4 mask){
+			float distance = get_distance(IN, position);
+
+			float4 color_distance = float4(
+				1 - pow(distance, 2),
+				1 - pow(distance, 2),
+			    1 - pow(distance, 2),
+				0
+			);
+			// apply mask
+			color_distance = color_distance * mask;
+
+			return color_distance * _Brigthness;
 		}
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
-			float p1_distance = get_distance(IN, _PointOnePosition);
-			float p2_distance = get_distance(IN, _PointTwoPosition);
-			float p3_distance = get_distance(IN, _PointThreePosition);
+			float4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+			c = c + applyPoint(IN, _PointOnePosition, _PointOneMask);
+			c = c + applyPoint(IN, _PointTwoPosition, _PointTwoMask);
+			c = c + applyPoint(IN, _PointThreePosition, _PointThreeMask);
 
-			float tidiness = 3;
 			// Albedo comes from a texture tinted by color
-			fixed4 c = (tex2D (_MainTex, IN.uv_MainTex) 
-				* _Color 
-				+ float4(tidiness * sqrt(p1_distance), 0, 0, 0)
-				+ float4(0, tidiness * sqrt(p2_distance), 0, 0)
-				+ float4(0, 0, tidiness * sqrt(p3_distance), 0)
-				 ) / 5;
-
 			o.Albedo = c.rgb;
 			// Metallic and smoothness come from slider variables
 			o.Metallic = _Metallic;
