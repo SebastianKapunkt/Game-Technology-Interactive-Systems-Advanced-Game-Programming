@@ -139,20 +139,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ca7ba0df89164d7bb9af52f1ea84c65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveController: {fileID: 609063394}
   theInput: {fileID: 697103788}
+  god: {fileID: 1922996955}
 --- !u!4 &112385732
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 112385730}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.21737428, y: 0.0070972145, z: -0.031625874}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &349223765
 GameObject:
@@ -184,7 +184,7 @@ RectTransform:
   m_Children:
   - {fileID: 697103789}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -431,10 +431,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 609063393}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8522e4c4e2483466ba3c9b9a0d85789a, type: 3}
+  m_Script: {fileID: 11500000, guid: 3156ea4de781747118c9897b7cf19625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
+  playerLane: 0
 --- !u!54 &609063395
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -740,7 +741,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1554430894
 GameObject:
@@ -889,8 +890,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1922996954}
+  - component: {fileID: 1922996955}
   m_Layer: 0
-  m_Name: LaneManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -907,5 +909,20 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1922996955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1922996953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c47fb545c7054adfb01b02979253f72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  astroid: {fileID: 114569216044396912, guid: c82430b9eb0f54a7a9756f7d0aaecbbe, type: 2}
+  score: 0
+  amountOfLanes: 10
+  typer: {fileID: 609063394}

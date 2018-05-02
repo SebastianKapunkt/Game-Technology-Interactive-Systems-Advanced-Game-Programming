@@ -1,29 +1,58 @@
 using System;
 using UnityEngine;
 
-public class LaneWalker : MonoBehaviour
+internal class LaneWalker : MonoBehaviour
 {
     private Lane lane;
+    private float speed;
+    private Transform target;
+    internal string keyWord {private set; get;}
+    internal float Score { private set; get;}
+    private TyperGod god;
 
-    public int Score { private set; get;}
-
-    public LaneWalker(Lane lane, int score){
+    internal void initilize(
+        Lane lane, 
+        float speed, 
+        float score, 
+        string keyWord,
+        TyperGod god
+    ){
         this.lane = lane;
-        this.Score = score;
+        this.speed = speed;
+        this.keyWord = keyWord;
+        this.god = god;
+        Score = score;
+
+        // set position to move in lave
+        target = new GameObject().transform;
+        target.position = lane.getLaneEndPoint();
+
+        // set spawn position in lane
+        transform.position = lane.getSpawnPoint();
     }
 
-    internal float getYPosition()
-    {
-        return transform.position.y;
+    internal void Update(){
+        moveToTarget();
+        checkForTargetReached();
     }
 
-    internal void destroy()
-    {
-        Destroy(gameObject);
+    private void moveToTarget(){
+        if(target != null){
+            float step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+        }
+    }
+
+    internal void checkForTargetReached(){
+        if(transform.position.z < (target.position.z + 0.5f)){
+            lane.subtractScore(Score);
+            Destroy(gameObject);
+        }
     }
 
     internal void kill(){
-        lane.RemoveDestroyedItem(this);
-        destroy();
+        god.killMe(this);
+        lane.addScore(Score);
+        Destroy(gameObject);
     }
 }

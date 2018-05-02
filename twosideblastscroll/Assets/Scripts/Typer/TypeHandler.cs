@@ -4,9 +4,9 @@ using UnityEngine.UI;
 public class TypeHandler : MonoBehaviour
 {
     [SerializeField]
-    private MoveController moveController;
-    [SerializeField]
     private InputField theInput;
+    [SerializeField]
+    private TyperGod god;
 
     void Update(){
         if(Input.GetKey(KeyCode.Return)) {
@@ -21,12 +21,14 @@ public class TypeHandler : MonoBehaviour
 
         switch(text){
             case "left":
-                moveController.MoveToX(2);
-            break;
+                god.moveTyperLaneLeft();
+                return;
             case "right":
-                moveController.MoveToX(-2);
-            break;
+                god.moveTyperLaneRight();
+                return;
         }
+
+        god.destroyObjectWithKeyWord(text);
     }
     
 }

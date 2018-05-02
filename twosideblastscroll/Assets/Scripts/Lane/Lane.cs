@@ -1,30 +1,59 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lane
+internal class Lane
 {
-    private int startX;
-    private int width;
-    private int height;
-    public int Score { private set; get;}
+    private float startX;
+    private float width;
+    private float height;
+    private Vector3 laneSpawnPoint;
+    private Vector3 laneEndPoint;
+    internal float Score { private set; get; }
 
-    private List<LaneWalker> laneItems;
+    internal Lane(float startX, float height, float width)
+    {
+        this.startX = startX;
+        this.height = height;
+        this.width = width;
 
-    public Vector2 getSpawnPoint(){
-        return new Vector2(startX + width/2, 0);
+        laneEndPoint = new Vector3(startX + width / 2, 0, -2);
+        laneSpawnPoint = new Vector3(startX + width / 2, 0, height + 1);
     }
 
-    public void checkLane(){
-        foreach(LaneWalker item in laneItems){
-            if(item.getYPosition() > height){
-                Score = Score - item.Score;
-                item.destroy();
-            }
+    internal Vector3 getLaneEndPoint()
+    {
+        return laneEndPoint;
+    }
+
+    internal Vector3 getSpawnPoint()
+    {
+        return laneSpawnPoint;
+    }
+
+    internal string toString()
+    {
+        return String.Format(
+            "startX: {0}, width: {1}, height: {2}",
+            startX,
+            width,
+            height
+        );
+    }
+
+    internal void subtractScore(float score)
+    {
+        if (score > 0)
+        {
+            Score = Score - score;
         }
     }
 
-    public void RemoveDestroyedItem(LaneWalker item){
-        Score = Score + item.Score;
-        laneItems.Remove(item);
+    internal void addScore(float score)
+    {
+        if (score > 0)
+        {
+            Score = Score + score;
+        }
     }
 }
