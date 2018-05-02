@@ -3,29 +3,30 @@ using UnityEngine;
 
 internal class LaneWalker : MonoBehaviour
 {
-    private Lane lane;
     private float speed;
-    private Transform target;
+    private GameObject target;
     internal string keyWord {private set; get;}
     internal float Score { private set; get;}
-    private TyperGod god;
+    private Action<LaneWalker> killCallback;
+    private Action<float> changeScoreCallback;
 
     internal void initilize(
         Lane lane, 
         float speed, 
         float score, 
         string keyWord,
-        TyperGod god
+        Action<LaneWalker> killCallback,
+        Action<float> changeScoreCallback
     ){
-        this.lane = lane;
         this.speed = speed;
         this.keyWord = keyWord;
-        this.god = god;
+        this.killCallback = killCallback;
+        this.changeScoreCallback = changeScoreCallback;
         Score = score;
 
         // set position to move in lave
-        target = new GameObject().transform;
-        target.position = lane.getLaneEndPoint();
+        target = new GameObject();
+        target.transform.position = lane.getLaneEndPoint();
 
         // set spawn position in lane
         transform.position = lane.getSpawnPoint();
@@ -39,20 +40,29 @@ internal class LaneWalker : MonoBehaviour
     private void moveToTarget(){
         if(target != null){
             float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                target.transform.position, 
+                step
+            );
         }
     }
 
     internal void checkForTargetReached(){
-        if(transform.position.z < (target.position.z + 0.5f)){
-            lane.subtractScore(Score);
-            Destroy(gameObject);
+        if(transform.position.z < (target.transform.position.z + 0.5f)){
+            changeScoreCallback(-Score);
+            cleanUp();
         }
     }
 
     internal void kill(){
-        god.killMe(this);
-        lane.addScore(Score);
+        killCallback(this);
+        changeScoreCallback(Score);
+        cleanUp();
+    }
+
+    private void cleanUp(){
+        Destroy(target);
         Destroy(gameObject);
     }
 }
