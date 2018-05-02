@@ -74,9 +74,9 @@
 			float distance = get_distance(IN, position);
 
 			float4 color_distance = float4(
-				1 - pow(distance, 2),
-				1 - pow(distance, 2),
-			    1 - pow(distance, 2),
+				1 - distance,
+				1 - distance,
+			    1 - distance,
 				0
 			);
 			// apply mask
