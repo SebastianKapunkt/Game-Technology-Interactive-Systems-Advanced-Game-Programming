@@ -9,20 +9,17 @@ public class Typer : MonoBehaviour
     private Transform target;
     [SerializeField]
     private float speed;
-    [SerializeField]
     private int playerLane;
     private int amountOfLanes;
-
-    void Start()
-    {
-        target = new GameObject().transform;
-        target.position = transform.position;
-    }
+    private Action stopGame;
 
     void Update()
     {
-        float step = speed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+        if (target != null)
+        {
+            float step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+        }
     }
 
     public void MoveToX(float x)
@@ -50,14 +47,27 @@ public class Typer : MonoBehaviour
 
     internal void startOnRandomLane(int amountOfLanes, List<Lane> lanes)
     {
+        target = new GameObject().transform;
+        target.position = transform.position;
         this.amountOfLanes = amountOfLanes;
         playerLane = UnityEngine.Random.Range(0, amountOfLanes);
-		Vector3 startLane = new Vector3(
+        Vector3 startLane = new Vector3(
             lanes[playerLane].getSpawnPoint().x,
             transform.position.y,
             transform.position.z
         );
         transform.position = startLane;
-		target.position = startLane;
+        target.position = startLane;
+    }
+
+    
+    void OnTriggerEnter(Collider other)
+    {
+        stopGame();
+    }
+
+    internal void registerGameStop(Action stopGame)
+    {
+        this.stopGame = stopGame;
     }
 }

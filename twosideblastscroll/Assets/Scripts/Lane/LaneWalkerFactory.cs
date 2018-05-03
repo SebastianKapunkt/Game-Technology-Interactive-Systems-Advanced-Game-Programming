@@ -9,17 +9,18 @@ public class LaneWalkerFactory : MonoBehaviour
         List<Lane> lanes,
         float gameSpeed,
         Action<LaneWalker> killMe,
-        Action<float> changeScore
+        Action<float> changeScore,
+        string[] wordsToPick
         )
     {
         int randomLane = UnityEngine.Random.Range(0, lanes.Count);
-        Debug.Log(randomLane);
-        Debug.Log("count: " + lanes.Count);
+        string keyword = wordsToPick[UnityEngine.Random.Range(0, wordsToPick.Length)];
+
         newWalker.initilize(
             lanes[randomLane],
             gameSpeed,
-            100,
-            "hey",
+            keyword.Length * 10,
+            keyword,
             killMe,
             changeScore
         );

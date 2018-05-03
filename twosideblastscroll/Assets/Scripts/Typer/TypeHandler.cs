@@ -7,28 +7,65 @@ public class TypeHandler : MonoBehaviour
     private InputField theInput;
     [SerializeField]
     private TyperGod god;
+    [SerializeField]
+    private PanelControl panelControl;
 
-    void Update(){
-        if(Input.GetKey(KeyCode.Return)) {
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Return))
+        {
             handleInput(theInput.text);
             theInput.text = "";
             theInput.ActivateInputField();
         }
     }
 
-    public void handleInput(string text){
-        if(text == "") return;
+    public void handleInput(string text)
+    {
+        if (text == "") return;
 
-        switch(text){
-            case "left":
-                god.moveTyperLaneLeft();
-                return;
-            case "right":
-                god.moveTyperLaneRight();
-                return;
+        if (text == "help")
+        {
+            if (panelControl.helpIsActive())
+            {
+                panelControl.hideHelp();
+            }
+            else
+            {
+                panelControl.showHelp();
+            }
         }
 
-        god.destroyObjectWithKeyWord(text);
+        if (god.getState() == GameStates.Pause)
+        {
+            switch (text)
+            {
+                case "start":
+                    panelControl.hideHelp();
+                    god.startGame();
+                    panelControl.hideGameOver();
+                    return;
+                case "continueit":
+                    panelControl.hideHelp();
+                    god.continueGame();
+                    return;
+            }
+        }
+        if (god.getState() == GameStates.Playing)
+        {
+            switch (text)
+            {
+                case "left":
+                    god.moveTyperLaneLeft();
+                    return;
+                case "right":
+                    god.moveTyperLaneRight();
+                    return;
+                case "needbreak":
+                    god.pauseGame();
+                    return;
+            }
+            god.destroyObjectWithKeyWord(text);
+        }
     }
-    
 }

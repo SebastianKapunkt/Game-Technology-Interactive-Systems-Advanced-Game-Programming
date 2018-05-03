@@ -1,0 +1,1 @@
+public enum GameStates {Playing, Pause};
