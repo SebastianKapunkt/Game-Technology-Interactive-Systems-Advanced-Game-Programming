@@ -49,6 +49,9 @@ public class TypeHandler : MonoBehaviour
                     panelControl.hideHelp();
                     god.continueGame();
                     return;
+                case "QUIT":
+                    Application.Quit();
+                    return;
             }
         }
         if (god.getState() == GameStates.Playing)
