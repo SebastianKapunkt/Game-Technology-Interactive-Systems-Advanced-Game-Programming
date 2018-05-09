@@ -46,6 +46,10 @@ public class TextConverterUtil
     private static string[] splitToArray(string text)
     {
         text = text.Replace(" ", ",");
+        while (text.Contains(",,"))
+        {
+            text = text.Replace(",,", ",");
+        }
         if (text.Length > 1)
         {
             return text.Split(',');
