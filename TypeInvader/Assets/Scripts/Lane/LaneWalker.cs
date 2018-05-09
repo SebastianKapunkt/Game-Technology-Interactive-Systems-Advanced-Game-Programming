@@ -87,4 +87,9 @@ internal class LaneWalker : MonoBehaviour
         Destroy(target);
         Destroy(gameObject);
     }
+
+    internal Vector3 getPosition()
+    {
+        return transform.position;
+    }
 }

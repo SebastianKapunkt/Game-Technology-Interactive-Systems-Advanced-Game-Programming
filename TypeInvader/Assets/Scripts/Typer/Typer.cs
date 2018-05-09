@@ -60,14 +60,22 @@ public class Typer : MonoBehaviour
         target.position = startLane;
     }
 
-    
+
     void OnTriggerEnter(Collider other)
     {
-        stopGame();
+        if (stopGame != null)
+        {
+            stopGame();
+        }
     }
 
     internal void registerGameStop(Action stopGame)
     {
         this.stopGame = stopGame;
+    }
+
+    internal Vector3 getPosition()
+    {
+        return transform.position;
     }
 }

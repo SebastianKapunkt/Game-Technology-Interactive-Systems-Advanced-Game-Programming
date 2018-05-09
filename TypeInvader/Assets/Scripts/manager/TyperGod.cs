@@ -7,11 +7,14 @@ public class TyperGod : MonoBehaviour
 {
     private List<Lane> lanes;
     private List<LaneWalker> existingWalker;
+    private List<TypeLineRenderer> lines;
     private float nextSpawn = 0;
     private string[] wordsToPick;
 
     [SerializeField]
     private LaneWalker laneWalker;
+    [SerializeField]
+    private TypeLineRenderer line;
     [SerializeField]
     private Typer typer;
     [SerializeField]
@@ -53,6 +56,7 @@ public class TyperGod : MonoBehaviour
         score = 0;
         changeScore(score);
         existingWalker = new List<LaneWalker>();
+        lines = new List<TypeLineRenderer>();
         typer.startOnRandomLane(amountOfLanes, lanes);
         typer.registerGameStop(stopGame);
     }
@@ -147,6 +151,7 @@ public class TyperGod : MonoBehaviour
             if (walker.keyWord.Equals(keyword))
             {
                 walkerToDestroy.Add(walker);
+                spawnLine(walker.getPosition(), typer.getPosition());
             }
         }
         foreach (LaneWalker walker in walkerToDestroy)
@@ -154,6 +159,20 @@ public class TyperGod : MonoBehaviour
             walker.kill();
             existingWalker.Remove(walker);
         }
+    }
+
+    private void spawnLine(Vector3 walkerToDestroy, Vector3 playerPosition)
+    {
+        TypeLineRenderer typer = Instantiate(line);
+        typer.initilize(
+            walkerToDestroy,
+            playerPosition,
+            removeLine
+        );
+    }
+
+    private void removeLine(TypeLineRenderer line){
+        lines.Remove(line);
     }
 
     private void changeScore(float score)

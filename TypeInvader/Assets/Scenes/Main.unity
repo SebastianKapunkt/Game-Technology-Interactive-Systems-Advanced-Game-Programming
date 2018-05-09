@@ -1422,6 +1422,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laneWalker: {fileID: 114354904924243940, guid: 43e3288702a524ebe982035358926549,
     type: 2}
+  line: {fileID: 114744324148861708, guid: 91a1d9467f484470db325dd6a1c9a173, type: 2}
   typer: {fileID: 609063394}
   scoreText: {fileID: 1570758315}
   panelControl: {fileID: 349223770}
