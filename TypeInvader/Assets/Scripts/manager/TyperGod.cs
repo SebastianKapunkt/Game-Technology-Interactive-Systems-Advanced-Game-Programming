@@ -73,13 +73,12 @@ public class TyperGod : MonoBehaviour
     internal void stopGame()
     {
         state = GameStates.Stop;
+        panelControl.showGameOver();
         foreach (LaneWalker walker in existingWalker)
         {
             walker.cleanUp();
         }
         existingWalker = new List<LaneWalker>();
-
-        panelControl.showGameOver();
     }
 
     internal void continueGame()

@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class Typer : MonoBehaviour
 {
-
+    [SerializeField]
     private Transform target;
     [SerializeField]
     private float speed;
+    [SerializeField]
     private int playerLane;
+    [SerializeField]
     private int amountOfLanes;
     private Action stopGame;
 

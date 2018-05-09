@@ -18,6 +18,14 @@ public class TypeHandler : MonoBehaviour
             theInput.text = "";
             theInput.ActivateInputField();
         }
+        if (Input.GetKeyUp(KeyCode.LeftArrow) && god.getState() == GameStates.Playing)
+        {
+            god.moveTyperLaneLeft();
+        }
+        if (Input.GetKeyUp(KeyCode.RightArrow) && god.getState() == GameStates.Playing)
+        {
+            god.moveTyperLaneRight();
+        }
     }
 
     public void handleInput(string text)
@@ -66,12 +74,6 @@ public class TypeHandler : MonoBehaviour
         {
             switch (text)
             {
-                case "left":
-                    god.moveTyperLaneLeft();
-                    return;
-                case "right":
-                    god.moveTyperLaneRight();
-                    return;
                 case "needbreak":
                     god.pauseGame();
                     panelControl.showHelp();
