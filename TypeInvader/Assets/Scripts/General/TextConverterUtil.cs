@@ -45,6 +45,7 @@ public class TextConverterUtil
 
     private static string[] splitToArray(string text)
     {
+        text = text.Trim();
         text = text.Replace(" ", ",");
         while (text.Contains(",,"))
         {
