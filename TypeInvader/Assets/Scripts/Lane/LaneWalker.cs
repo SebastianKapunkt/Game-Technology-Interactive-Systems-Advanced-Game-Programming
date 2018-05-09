@@ -84,8 +84,8 @@ internal class LaneWalker : MonoBehaviour
 
     internal void cleanUp()
     {
-        Destroy(target);
-        Destroy(gameObject);
+        Destroy(target, 0.3f);
+        Destroy(gameObject, 0.3f);
     }
 
     internal Vector3 getPosition()
