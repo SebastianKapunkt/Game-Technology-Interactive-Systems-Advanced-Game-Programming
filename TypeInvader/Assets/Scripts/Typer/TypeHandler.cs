@@ -36,7 +36,12 @@ public class TypeHandler : MonoBehaviour
             }
         }
 
-        if (god.getState() == GameStates.Stop)
+        if (text == "QUIT")
+        {
+            Application.Quit();
+        }
+
+        if (god.getState() == GameStates.Stop || god.getState() == GameStates.Pause)
         {
             switch (text)
             {
@@ -55,9 +60,6 @@ public class TypeHandler : MonoBehaviour
                     panelControl.hideHelp();
                     god.continueGame();
                     return;
-                case "QUIT":
-                    Application.Quit();
-                    return;
             }
         }
         if (god.getState() == GameStates.Playing)
@@ -72,6 +74,7 @@ public class TypeHandler : MonoBehaviour
                     return;
                 case "needbreak":
                     god.pauseGame();
+                    panelControl.showHelp();
                     return;
             }
             god.destroyObjectWithKeyWord(text);
