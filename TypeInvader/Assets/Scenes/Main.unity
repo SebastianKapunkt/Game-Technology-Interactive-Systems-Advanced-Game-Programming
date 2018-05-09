@@ -339,7 +339,9 @@ MonoBehaviour:
     right - arrow key right
 
 
-    QUIT - leave the game'
+    QUIT - leave the game
+
+    goToMenu - back to Menu'
 --- !u!222 &169360675
 CanvasRenderer:
   m_ObjectHideFlags: 0

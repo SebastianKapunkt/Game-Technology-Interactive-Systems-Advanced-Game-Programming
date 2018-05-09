@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TypeHandler : MonoBehaviour
@@ -9,6 +10,10 @@ public class TypeHandler : MonoBehaviour
     private TyperGod god;
     [SerializeField]
     private PanelControl panelControl;
+
+    void Start(){
+        theInput.ActivateInputField();
+    }
 
     void Update()
     {
@@ -47,6 +52,10 @@ public class TypeHandler : MonoBehaviour
         if (text == "QUIT")
         {
             Application.Quit();
+        }
+
+        if (text == "goToMenu"){
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         }
 
         if (god.getState() == GameStates.Stop || god.getState() == GameStates.Pause)
