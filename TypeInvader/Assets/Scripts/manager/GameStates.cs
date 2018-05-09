@@ -1,1 +1,1 @@
-public enum GameStates {Playing, Pause};
+public enum GameStates {Playing, Pause, Stop};

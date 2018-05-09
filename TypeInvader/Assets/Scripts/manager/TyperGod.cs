@@ -43,7 +43,18 @@ public class TyperGod : MonoBehaviour
                 walker.cleanUp();
             }
         }
-        prepareGame();
+        Vector3 stageBottomRight = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        Vector3 stageTopLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
+        lanes = LaneFactory.GenerateLanes(
+            new Vector2(stageTopLeft.x, stageTopLeft.z),
+            new Vector2(stageBottomRight.x, stageBottomRight.z),
+            amountOfLanes
+        );
+        score = 0;
+        changeScore(score);
+        existingWalker = new List<LaneWalker>();
+        typer.startOnRandomLane(amountOfLanes, lanes);
+        typer.registerGameStop(stopGame);
     }
 
     internal void pauseGame()
@@ -57,7 +68,7 @@ public class TyperGod : MonoBehaviour
 
     internal void stopGame()
     {
-        state = GameStates.Pause;
+        state = GameStates.Stop;
         foreach (LaneWalker walker in existingWalker)
         {
             walker.cleanUp();
@@ -69,9 +80,9 @@ public class TyperGod : MonoBehaviour
 
     internal void continueGame()
     {
+        state = GameStates.Playing;
         if (existingWalker != null)
         {
-            state = GameStates.Playing;
             foreach (LaneWalker walker in existingWalker)
             {
                 walker.continueWalking();
@@ -87,21 +98,7 @@ public class TyperGod : MonoBehaviour
     void Start()
     {
         wordsToPick = SaveLoad.Load();
-        state = GameStates.Pause;
-    }
-
-    internal void prepareGame()
-    {
-        Vector3 stageBottomRight = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-        Vector3 stageTopLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
-        lanes = LaneFactory.GenerateLanes(
-            new Vector2(stageTopLeft.x, stageTopLeft.z),
-            new Vector2(stageBottomRight.x, stageBottomRight.z),
-            amountOfLanes
-        );
-        existingWalker = new List<LaneWalker>();
-        typer.startOnRandomLane(amountOfLanes, lanes);
-        typer.registerGameStop(stopGame);
+        state = GameStates.Stop;
     }
 
     void FixedUpdate()

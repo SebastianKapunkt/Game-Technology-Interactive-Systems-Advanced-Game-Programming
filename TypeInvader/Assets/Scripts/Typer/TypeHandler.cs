@@ -36,7 +36,7 @@ public class TypeHandler : MonoBehaviour
             }
         }
 
-        if (god.getState() == GameStates.Pause)
+        if (god.getState() == GameStates.Stop)
         {
             switch (text)
             {
@@ -45,6 +45,12 @@ public class TypeHandler : MonoBehaviour
                     god.startGame();
                     panelControl.hideGameOver();
                     return;
+            }
+        }
+        if (god.getState() == GameStates.Pause)
+        {
+            switch (text)
+            {
                 case "continueit":
                     panelControl.hideHelp();
                     god.continueGame();

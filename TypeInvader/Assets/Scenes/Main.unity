@@ -224,7 +224,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Commands:
 
-    start - starts/resume game
+    start - starts/restart game
 
     needbreak - pause game
 
