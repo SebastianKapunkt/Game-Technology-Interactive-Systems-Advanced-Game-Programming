@@ -9,7 +9,8 @@ public class LaneWalkerFactory : MonoBehaviour
         List<Lane> lanes,
         float gameSpeed,
         Action<float> changeScore,
-        string[] wordsToPick
+        string[] wordsToPick,
+        Action<LaneWalker> removeWalker
         )
     {
         int randomLane = UnityEngine.Random.Range(0, lanes.Count);
@@ -20,7 +21,8 @@ public class LaneWalkerFactory : MonoBehaviour
             gameSpeed,
             keyword.Length * 10,
             keyword,
-            changeScore
+            changeScore,
+            removeWalker
         );
 
         return newWalker;

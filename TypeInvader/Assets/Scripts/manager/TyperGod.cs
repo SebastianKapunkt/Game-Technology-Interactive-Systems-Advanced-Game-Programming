@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class TyperGod : MonoBehaviour
 {
     private List<Lane> lanes;
+    [SerializeField]
     private List<LaneWalker> existingWalker;
     private List<TypeLineRenderer> lines;
     private float nextSpawn = 0;
@@ -127,7 +128,8 @@ public class TyperGod : MonoBehaviour
             lanes,
             calculatedSpeed,
             changeScore,
-            wordsToPick
+            wordsToPick,
+            removeWalker            
         );
         existingWalker.Add(newWalker);
     }
@@ -149,14 +151,14 @@ public class TyperGod : MonoBehaviour
         {
             if (walker.keyWord.Equals(keyword))
             {
-                walkerToDestroy.Add(walker);
                 spawnLine(walker.getPosition(), typer.getPosition());
+                walkerToDestroy.Add(walker);
             }
         }
         foreach (LaneWalker walker in walkerToDestroy)
         {
-            walker.kill();
             existingWalker.Remove(walker);
+            walker.kill();
         }
     }
 
@@ -172,6 +174,10 @@ public class TyperGod : MonoBehaviour
 
     private void removeLine(TypeLineRenderer line){
         lines.Remove(line);
+    }
+
+    private void removeWalker(LaneWalker walker){
+        existingWalker.Remove(walker);
     }
 
     private void changeScore(float score)

@@ -9,6 +9,7 @@ internal class LaneWalker : MonoBehaviour
     internal string keyWord { private set; get; }
     internal float Score { private set; get; }
     private Action<float> changeScoreCallback;
+    private Action<LaneWalker> removeWalker;
     [SerializeField]
     private Text wordToType;
     private bool isMoving = true;
@@ -18,9 +19,11 @@ internal class LaneWalker : MonoBehaviour
         float speed,
         float score,
         string keyWord,
-        Action<float> changeScoreCallback
+        Action<float> changeScoreCallback,
+        Action<LaneWalker> removeWalker
     )
     {
+        this.removeWalker = removeWalker;
         this.speed = speed;
         this.keyWord = keyWord;
         this.changeScoreCallback = changeScoreCallback;
@@ -33,6 +36,11 @@ internal class LaneWalker : MonoBehaviour
         // set spawn position in lane
         transform.position = lane.getSpawnPoint();
         wordToType.text = keyWord;
+    }
+
+    internal Vector3 getPosition()
+    {
+        return transform.position;
     }
 
     internal void pause()
@@ -71,6 +79,7 @@ internal class LaneWalker : MonoBehaviour
     {
         if (transform.position.z < (target.transform.position.z + 0.5f))
         {
+            removeWalker(this);
             changeScoreCallback(-Score);
             cleanUp();
         }
@@ -84,12 +93,9 @@ internal class LaneWalker : MonoBehaviour
 
     internal void cleanUp()
     {
-        Destroy(target, 0.3f);
+        isMoving = false;
+        Destroy(target);
+        target = null;
         Destroy(gameObject, 0.3f);
-    }
-
-    internal Vector3 getPosition()
-    {
-        return transform.position;
     }
 }
