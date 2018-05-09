@@ -331,9 +331,12 @@ MonoBehaviour:
 
     help - open help
 
-    left - moves you left
 
-    right - moves you rught
+    Movement:
+
+    left - arrow key left
+
+    right - arrow key right
 
 
     QUIT - leave the game'
@@ -709,7 +712,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3156ea4de781747118c9897b7cf19625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
   speed: 2
+  playerLane: 0
+  amountOfLanes: 0
 --- !u!54 &609063395
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1243,7 +1249,7 @@ MonoBehaviour:
   m_Text: 'Game Over
 
 
-    to play again type ''Start'''
+    to play again type ''start'''
 --- !u!222 &1602650608
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1426,12 +1432,12 @@ MonoBehaviour:
   typer: {fileID: 609063394}
   scoreText: {fileID: 1570758315}
   panelControl: {fileID: 349223770}
-  state: 0
+  state: 2
   score: 0
-  amountOfLanes: 5
+  amountOfLanes: 8
   gameSpeed: 1
   calculatedSpeed: 0
-  spawnRate: 2
+  spawnRate: 1.5
   calculatedSpawnRate: 0
 --- !u!4 &2075001364
 Transform:
