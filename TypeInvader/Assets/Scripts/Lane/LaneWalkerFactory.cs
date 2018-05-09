@@ -8,7 +8,6 @@ public class LaneWalkerFactory : MonoBehaviour
         LaneWalker newWalker,
         List<Lane> lanes,
         float gameSpeed,
-        Action<LaneWalker> killMe,
         Action<float> changeScore,
         string[] wordsToPick
         )
@@ -21,7 +20,6 @@ public class LaneWalkerFactory : MonoBehaviour
             gameSpeed,
             keyword.Length * 10,
             keyword,
-            killMe,
             changeScore
         );
 

@@ -8,7 +8,6 @@ internal class LaneWalker : MonoBehaviour
     private GameObject target;
     internal string keyWord { private set; get; }
     internal float Score { private set; get; }
-    private Action<LaneWalker> killCallback;
     private Action<float> changeScoreCallback;
     [SerializeField]
     private Text wordToType;
@@ -19,13 +18,11 @@ internal class LaneWalker : MonoBehaviour
         float speed,
         float score,
         string keyWord,
-        Action<LaneWalker> killCallback,
         Action<float> changeScoreCallback
     )
     {
         this.speed = speed;
         this.keyWord = keyWord;
-        this.killCallback = killCallback;
         this.changeScoreCallback = changeScoreCallback;
         Score = score;
 
@@ -81,7 +78,6 @@ internal class LaneWalker : MonoBehaviour
 
     internal void kill()
     {
-        killCallback(this);
         changeScoreCallback(Score);
         cleanUp();
     }

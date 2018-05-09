@@ -123,7 +123,6 @@ public class TyperGod : MonoBehaviour
             newWalker,
             lanes,
             calculatedSpeed,
-            killMe,
             changeScore,
             wordsToPick
         );
@@ -152,14 +151,9 @@ public class TyperGod : MonoBehaviour
         }
         foreach (LaneWalker walker in walkerToDestroy)
         {
-            existingWalker.Remove(walker);
             walker.kill();
+            existingWalker.Remove(walker);
         }
-    }
-
-    internal void killMe(LaneWalker walker)
-    {
-        existingWalker.Remove(walker);
     }
 
     private void changeScore(float score)
