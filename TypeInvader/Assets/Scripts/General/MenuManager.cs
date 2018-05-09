@@ -28,8 +28,9 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void saveKeyWords(){
-		string[] keyWords = keyWordInput.text.Split(' ');
+		string[] keyWords = TextConverterUtil.convertToArray(keyWordInput.text);
 		SaveLoad.Save(keyWords);
+		loadKeyWords();
 	}
 
 	public void loadKeyWords(){
