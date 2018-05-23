@@ -8,24 +8,30 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float speed;
     [SerializeField]
+    private float jumpHeight;
+    [SerializeField]
     private Vector2 velocity;
-    private Rigidbody2D rigidbody2D;
+    private Rigidbody2D rigid;
 
     void Start()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
+        rigid = GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate()
     {
-        velocity = rigidbody2D.velocity;
+        velocity = rigid.velocity;
         if (Input.GetKey("d") && velocity.x < 5)
         {
-            rigidbody2D.AddForce(Vector2.right * speed);
+            rigid.AddForce(Vector2.right * speed);
         }
         if (Input.GetKey("a") && velocity.x > -5)
         {
-            rigidbody2D.AddForce(Vector2.left * speed);
+            rigid.AddForce(Vector2.left * speed);
+        }
+        if (Input.GetKeyDown("space"))
+        {
+            rigid.AddForce(Vector2.up * jumpHeight);
         }
     }
 }
