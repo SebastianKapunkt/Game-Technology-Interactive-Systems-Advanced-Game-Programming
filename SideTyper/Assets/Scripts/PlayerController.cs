@@ -8,6 +8,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float speed;
     [SerializeField]
+    private float maxSpeed;
+    [SerializeField]
+    private float currentMaxSpeed;
+    [SerializeField]
+    private float currentSpeed;
+    [SerializeField]
     private float jumpHeight;
     [SerializeField]
     private Vector2 velocity;
@@ -27,6 +33,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
+        currentMaxSpeed = maxSpeed;
+        currentSpeed = speed;
     }
 
     void FixedUpdate()
@@ -62,14 +70,30 @@ public class PlayerController : MonoBehaviour
     {
         facingDirection = wantedState;
         velocity = rigid.velocity;
-        if (facingDirection.Equals(FacingDirectionState.RIGHT) && velocity.x < 5)
+        if (facingDirection.Equals(FacingDirectionState.RIGHT) && velocity.x < currentMaxSpeed)
         {
-            rigid.AddForce(Vector2.right * speed);
+            rigid.AddForce(Vector2.right * currentSpeed);
         }
-        if (facingDirection.Equals(FacingDirectionState.LEFT) && velocity.x > -5)
+        if (facingDirection.Equals(FacingDirectionState.LEFT) && velocity.x > -currentMaxSpeed)
         {
-            rigid.AddForce(Vector2.left * speed);
+            rigid.AddForce(Vector2.left * currentSpeed);
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("collectable"))
+        {
+            other.gameObject.SetActive(false);
+            currentSpeed += 250;
+            currentMaxSpeed += 3;
+            Invoke("SetSpeedNormal", 5);
+        }
+    }
+
+    private void SetSpeedNormal(){
+        currentSpeed = speed;
+        currentMaxSpeed = maxSpeed;
     }
 
 }
