@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform groundCheck;
 
+    private float speedBoost = 250;
+    private float maxSpeedBoost = 3;
+
     private Rigidbody2D rigid;
 
     void Start()
@@ -39,21 +42,24 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround))
+        if (!state.Equals(PlayerState.DEAD) && !state.Equals(PlayerState.WON))
         {
-            state = PlayerState.RUN;
-        }
-        if (Input.GetKey("d"))
-        {
-            move(FacingDirectionState.RIGHT);
-        }
-        if (Input.GetKey("a"))
-        {
-            move(FacingDirectionState.LEFT);
-        }
-        if (Input.GetKeyDown("space"))
-        {
-            jump();
+            if (Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround))
+            {
+                state = PlayerState.RUN;
+            }
+            if (Input.GetKey("d"))
+            {
+                move(FacingDirectionState.RIGHT);
+            }
+            if (Input.GetKey("a"))
+            {
+                move(FacingDirectionState.LEFT);
+            }
+            if (Input.GetKeyDown("space"))
+            {
+                jump();
+            }
         }
     }
 
@@ -85,15 +91,26 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("collectable"))
         {
             other.gameObject.SetActive(false);
-            currentSpeed += 250;
-            currentMaxSpeed += 3;
+            currentSpeed += speedBoost;
+            currentMaxSpeed += maxSpeedBoost;
             Invoke("SetSpeedNormal", 5);
+        }
+
+        if (other.gameObject.CompareTag("ground_is_lava"))
+        {
+            state = PlayerState.DEAD;
+        }
+
+        if (other.gameObject.CompareTag("Finish"))
+        {
+            state = PlayerState.WON;
         }
     }
 
-    private void SetSpeedNormal(){
-        currentSpeed = speed;
-        currentMaxSpeed = maxSpeed;
+    private void SetSpeedNormal()
+    {
+        currentSpeed = currentSpeed - speedBoost;
+        currentMaxSpeed = currentMaxSpeed - maxSpeedBoost;
     }
 
 }

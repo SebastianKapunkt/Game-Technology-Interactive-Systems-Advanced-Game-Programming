@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ground
   - collectable
+  - ground_is_lava
   layers:
   - Default
   - TransparentFX

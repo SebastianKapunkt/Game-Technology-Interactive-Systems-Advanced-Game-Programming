@@ -1,5 +1,7 @@
 enum PlayerState
 {
     RUN,
-    JUMP
+    JUMP,
+    DEAD,
+    WON
 }
