@@ -11,6 +11,17 @@ public class PlayerController : MonoBehaviour
     private float jumpHeight;
     [SerializeField]
     private Vector2 velocity;
+    [SerializeField]
+    private PlayerState state = PlayerState.RUN;
+    [SerializeField]
+    private FacingDirectionState facingDirection = FacingDirectionState.RIGHT;
+    [SerializeField]
+    private LayerMask whatIsGround;
+    [SerializeField]
+    private float groundRadius = 0.2f;
+    [SerializeField]
+    private Transform groundCheck;
+
     private Rigidbody2D rigid;
 
     void Start()
@@ -20,18 +31,45 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        velocity = rigid.velocity;
-        if (Input.GetKey("d") && velocity.x < 5)
+        if (Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround))
         {
-            rigid.AddForce(Vector2.right * speed);
+            state = PlayerState.RUN;
         }
-        if (Input.GetKey("a") && velocity.x > -5)
+        if (Input.GetKey("d"))
         {
-            rigid.AddForce(Vector2.left * speed);
+            move(FacingDirectionState.RIGHT);
+        }
+        if (Input.GetKey("a"))
+        {
+            move(FacingDirectionState.LEFT);
         }
         if (Input.GetKeyDown("space"))
         {
-            rigid.AddForce(Vector2.up * jumpHeight);
+            jump();
         }
     }
+
+    private void jump()
+    {
+        if (!state.Equals(PlayerState.JUMP))
+        {
+            state = PlayerState.JUMP;
+            rigid.AddForce(new Vector2(0, jumpHeight), ForceMode2D.Impulse);
+        }
+    }
+
+    private void move(FacingDirectionState wantedState)
+    {
+        facingDirection = wantedState;
+        velocity = rigid.velocity;
+        if (facingDirection.Equals(FacingDirectionState.RIGHT) && velocity.x < 5)
+        {
+            rigid.AddForce(Vector2.right * speed);
+        }
+        if (facingDirection.Equals(FacingDirectionState.LEFT) && velocity.x > -5)
+        {
+            rigid.AddForce(Vector2.left * speed);
+        }
+    }
+
 }

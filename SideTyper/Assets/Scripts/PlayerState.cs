@@ -1,0 +1,5 @@
+enum PlayerState
+{
+    RUN,
+    JUMP
+}

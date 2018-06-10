@@ -1,0 +1,5 @@
+enum FacingDirectionState
+{
+    RIGHT,
+    LEFT
+}
