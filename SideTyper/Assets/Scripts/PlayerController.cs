@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
     private float groundRadius = 0.2f;
     [SerializeField]
     private Transform groundCheck;
+    [SerializeField]
+    private CanvasController canvasController;
+    private Vector3 startPosition;
 
     private float speedBoost = 250;
     private float maxSpeedBoost = 3;
@@ -38,10 +41,17 @@ public class PlayerController : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         currentMaxSpeed = maxSpeed;
         currentSpeed = speed;
+        canvasController.init();
+        startPosition = new Vector3(
+            gameObject.transform.position.x,
+            gameObject.transform.position.y,
+            gameObject.transform.position.z
+        );
     }
 
     void FixedUpdate()
     {
+        velocity = rigid.velocity;
         if (!state.Equals(PlayerState.DEAD) && !state.Equals(PlayerState.WON))
         {
             if (Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround))
@@ -61,6 +71,13 @@ public class PlayerController : MonoBehaviour
                 jump();
             }
         }
+        else
+        {
+            if (Input.GetKeyDown("enter") || Input.GetKeyDown("return"))
+            {
+                restartGame();
+            }
+        }
     }
 
     private void jump()
@@ -75,7 +92,6 @@ public class PlayerController : MonoBehaviour
     private void move(FacingDirectionState wantedState)
     {
         facingDirection = wantedState;
-        velocity = rigid.velocity;
         if (facingDirection.Equals(FacingDirectionState.RIGHT) && velocity.x < currentMaxSpeed)
         {
             rigid.AddForce(Vector2.right * currentSpeed);
@@ -99,11 +115,14 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("ground_is_lava"))
         {
             state = PlayerState.DEAD;
+            canvasController.lose();
         }
 
         if (other.gameObject.CompareTag("Finish"))
         {
             state = PlayerState.WON;
+            rigid.velocity = Vector3.zero;
+            canvasController.win();
         }
     }
 
@@ -111,6 +130,14 @@ public class PlayerController : MonoBehaviour
     {
         currentSpeed = currentSpeed - speedBoost;
         currentMaxSpeed = currentMaxSpeed - maxSpeedBoost;
+    }
+
+    private void restartGame()
+    {
+        canvasController.init();
+        rigid.velocity = Vector3.zero;
+        gameObject.transform.position = startPosition;
+        state = PlayerState.RUN;
     }
 
 }
