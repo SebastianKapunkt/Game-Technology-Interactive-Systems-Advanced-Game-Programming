@@ -2139,7 +2139,15 @@ MonoBehaviour:
     m_Bits: 4294967039
   groundRadius: 0.5
   groundCheck: {fileID: 1056123777}
+  collectables:
+  - {fileID: 1257048822}
+  - {fileID: 1684028263}
   canvasController: {fileID: 1798601093}
+--- !u!1 &1257048822 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1459510635559692, guid: 3e4645fb299094331b6df8fa0a86dc1b,
+    type: 2}
+  m_PrefabInternal: {fileID: 59585631}
 --- !u!1001 &1278572174
 Prefab:
   m_ObjectHideFlags: 0
@@ -2839,6 +2847,11 @@ Transform:
   m_PrefabParentObject: {fileID: 4173883212813946, guid: 36b4c162d86f146e3a4d11de3f8f851e,
     type: 2}
   m_PrefabInternal: {fileID: 195857637}
+--- !u!1 &1684028263 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1459510635559692, guid: 3e4645fb299094331b6df8fa0a86dc1b,
+    type: 2}
+  m_PrefabInternal: {fileID: 737627867}
 --- !u!1 &1698469998
 GameObject:
   m_ObjectHideFlags: 0

@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform groundCheck;
     [SerializeField]
+    private List<GameObject> collectables;
+    [SerializeField]
     private CanvasController canvasController;
     private Vector3 startPosition;
 
@@ -138,6 +140,10 @@ public class PlayerController : MonoBehaviour
         rigid.velocity = Vector3.zero;
         gameObject.transform.position = startPosition;
         state = PlayerState.RUN;
+        foreach (GameObject item in collectables)
+        {
+            item.SetActive(true);
+        }
     }
 
 }
