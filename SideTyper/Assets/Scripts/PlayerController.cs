@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private CanvasController canvasController;
     private Vector3 startPosition;
+    private Animator animator;
+
 
     private float speedBoost = 250;
     private float maxSpeedBoost = 3;
@@ -44,11 +46,23 @@ public class PlayerController : MonoBehaviour
         currentMaxSpeed = maxSpeed;
         currentSpeed = speed;
         canvasController.init();
+        animator = GetComponent<Animator>();
         startPosition = new Vector3(
             gameObject.transform.position.x,
             gameObject.transform.position.y,
             gameObject.transform.position.z
         );
+    }
+
+    void Update(){
+        animator.SetFloat("speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+        animator.SetFloat("vSpeed", rigid.velocity.y);
+
+        if(state.Equals(PlayerState.JUMP)){
+            animator.SetBool("Ground", false);
+        } else {
+            animator.SetBool("Ground", true);
+        }
     }
 
     void FixedUpdate()
