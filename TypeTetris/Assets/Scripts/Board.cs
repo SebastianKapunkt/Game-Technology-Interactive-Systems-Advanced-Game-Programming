@@ -62,10 +62,45 @@ public class Board
         }
     }
 
-    
-
-    private bool isEmpty(int row, int column)
+    public void tick()
     {
-        return field[row, column] == 0;
+        if (canCurrentGoDown())
+        {
+            for (int r = rows - 1; r >= 0; r--)
+            {
+                for (int c = columns - 1; c >= 0; c--)
+                {
+                    if (field[r, c] == current)
+                    {
+                        field[r, c] = 0;
+                        field[r + 1, c] = current;
+                    }
+                }
+            }
+        }
+        else
+        {
+            // trigger generation of new stone
+        }
+    }
+
+    public bool canCurrentGoDown()
+    {
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < columns; c++)
+            {
+                if (field[r, c] == current
+                    && (
+                        r + 1 >= rows
+                        || (field[r + 1, c] != 0 && field[r + 1, c] != current)
+                    )
+                )
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
