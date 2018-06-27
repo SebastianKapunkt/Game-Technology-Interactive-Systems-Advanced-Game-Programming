@@ -6,7 +6,7 @@ public class Board
     public int current { get; internal set; }
     public int middleField { get; internal set; }
 
-    private int[,] field;
+    public int[,] field { get; internal set; }
 
     public Board(int rows, int columns)
     {
@@ -36,10 +36,33 @@ public class Board
         }
     }
 
-    private void insertStone(int[,] stone)
+    public void insertBlock(int[,] stone)
     {
         current++;
+        int mostTopFilledRowNumber = BoardUtils.getMostTopFilledRowNumber(stone);
+        int stoneLeft = 0;
+        int stoneRight = 0;
+        BoardUtils.getStoneBorders(stone, out stoneLeft, out stoneRight);
+        int spaceToLeft = BoardUtils.calculateSpaceToLeft(field.GetLength(1), stoneLeft, stoneRight);
+
+        int marginLeft = spaceToLeft;
+        int fromTop = 0;
+        for (int r = mostTopFilledRowNumber; r < stone.GetLength(0); r++)
+        {
+            for (int c = stoneLeft; c <= stoneRight; c++)
+            {
+                if (stone[r, c] == 1)
+                {
+                    field[fromTop, marginLeft] = current;
+                }
+                marginLeft++;
+            }
+            fromTop++;
+            marginLeft = spaceToLeft;
+        }
     }
+
+    
 
     private bool isEmpty(int row, int column)
     {
